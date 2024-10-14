@@ -31,6 +31,10 @@ public class EsemenyEntity {
     )
     private List<CsoportEntity> csoportok;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "hely_id", referencedColumnName = "id")
+    private HelyEntity hely;
+
     public EsemenyEntity() {
     }
 
@@ -97,6 +101,14 @@ public class EsemenyEntity {
 
     public void setCsoportok(List<CsoportEntity> csoportok) {
         this.csoportok = csoportok;
+    }
+
+    public HelyEntity getHely() {
+        return hely;
+    }
+
+    public void setHely(HelyEntity hely) {
+        this.hely = hely;
     }
 
     @Override
