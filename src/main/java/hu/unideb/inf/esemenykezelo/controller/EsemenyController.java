@@ -17,7 +17,7 @@ public class EsemenyController {
 
     @GetMapping("/hw")
     public ResponseEntity<String> helloworld(){
-        return new ResponseEntity<>("Hello, world!", HttpStatus.OK);
+        return new ResponseEntity<>("Hello, world!", HttpStatus.NOT_FOUND);
     }
 
 }
