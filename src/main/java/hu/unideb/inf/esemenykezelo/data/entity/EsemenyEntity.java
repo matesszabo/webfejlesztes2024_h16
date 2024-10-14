@@ -35,6 +35,9 @@ public class EsemenyEntity {
     @JoinColumn(name = "hely_id", referencedColumnName = "id")
     private HelyEntity hely;
 
+    @ManyToMany(mappedBy = "esemenyek")
+    private List<FelhasznaloEntity> felhasznalok;
+
     public EsemenyEntity() {
     }
 
@@ -109,6 +112,14 @@ public class EsemenyEntity {
 
     public void setHely(HelyEntity hely) {
         this.hely = hely;
+    }
+
+    public List<FelhasznaloEntity> getFelhasznalok() {
+        return felhasznalok;
+    }
+
+    public void setFelhasznalok(List<FelhasznaloEntity> felhasznalok) {
+        this.felhasznalok = felhasznalok;
     }
 
     @Override
