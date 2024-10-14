@@ -3,6 +3,7 @@ package hu.unideb.inf.esemenykezelo.data.entity;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -22,6 +23,13 @@ public class EsemenyEntity {
     private String leiras;
     @Column(name = "letrehozo")
     private String letrehozo;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "Esemeny_csoportok",
+        joinColumns = {@JoinColumn(name = "esemeny_id")},
+        inverseJoinColumns = {@JoinColumn(name = "csoport_id")}
+    )
+    private List<CsoportEntity> csoportok;
 
     public EsemenyEntity() {
     }
@@ -81,6 +89,14 @@ public class EsemenyEntity {
 
     public void setLetrehozo(String letrehozo) {
         this.letrehozo = letrehozo;
+    }
+
+    public List<CsoportEntity> getCsoportok() {
+        return csoportok;
+    }
+
+    public void setCsoportok(List<CsoportEntity> csoportok) {
+        this.csoportok = csoportok;
     }
 
     @Override

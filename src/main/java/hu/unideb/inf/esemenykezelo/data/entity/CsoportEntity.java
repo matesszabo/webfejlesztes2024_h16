@@ -2,6 +2,7 @@ package hu.unideb.inf.esemenykezelo.data.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -15,6 +16,9 @@ public class CsoportEntity {
     private String nev;
     @Column(name = "tema")
     private String tema;
+
+    @ManyToMany(mappedBy = "csoportok")
+    private List<EsemenyEntity> esemenyek;
 
     public CsoportEntity() {
     }
@@ -47,6 +51,14 @@ public class CsoportEntity {
 
     public void setTema(String tema) {
         this.tema = tema;
+    }
+
+    public List<EsemenyEntity> getEsemenyek() {
+        return esemenyek;
+    }
+
+    public void setEsemenyek(List<EsemenyEntity> esemenyek) {
+        this.esemenyek = esemenyek;
     }
 
     @Override
