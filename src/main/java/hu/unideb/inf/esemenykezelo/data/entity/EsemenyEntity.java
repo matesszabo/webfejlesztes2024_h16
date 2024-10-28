@@ -24,14 +24,14 @@ public class EsemenyEntity {
     @Column(name = "letrehozo")
     private String letrehozo;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "Esemeny_csoportok",
         joinColumns = {@JoinColumn(name = "esemeny_id")},
         inverseJoinColumns = {@JoinColumn(name = "csoport_id")}
     )
     private List<CsoportEntity> csoportok;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "hely_id", referencedColumnName = "id")
     private HelyEntity hely;
 

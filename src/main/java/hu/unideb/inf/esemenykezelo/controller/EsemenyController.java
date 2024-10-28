@@ -7,6 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController//json-t küld, json-t fogad
 @RequestMapping("/api")
 public class EsemenyController {
@@ -31,6 +34,8 @@ public class EsemenyController {
         return repository.save(entity);
     }
 
+    // localhost:8080/api/updateesemeny
+    //UPDATE
     @PutMapping("/updateesemeny")
     public EsemenyEntity update(@RequestBody EsemenyEntity entity){
         if(entity.getId() > 0L){
@@ -38,5 +43,37 @@ public class EsemenyController {
         }
         return null;
     }
+
+    // localhost:8080/api/esemeny?id=1
+    //DELETE
+    @DeleteMapping("/esemeny")
+    public void delete(@RequestParam Long id){
+        repository.deleteById(id);
+    }
+
+    @GetMapping("/esemenyek")
+    public List<EsemenyEntity> findAll(){
+        return repository.findAll();
+    }
+
+    //localhost:8080/api/esemeny/napfogyatkozas
+    @GetMapping("/esemeny/{nev}")
+    public List<EsemenyEntity> findAllByNev(@PathVariable String nev){
+        List<EsemenyEntity> szurt = new ArrayList<>();
+
+        szurt = repository.findAll()
+                .stream()
+                .filter(x -> x.getNev().contains(nev))
+                .toList();
+
+        return szurt;
+    }
+
+    //localhost:8080/api/esemenybynev?nev=napfogyatkozas
+    @GetMapping("/esemenybynev")
+    public List<EsemenyEntity> findAllByNevRp(@RequestParam String nev){
+        return repository.findAllByNevContains(nev);
+    }
+
 
 }
