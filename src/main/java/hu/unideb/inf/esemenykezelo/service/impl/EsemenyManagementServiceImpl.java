@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -60,5 +61,38 @@ public class EsemenyManagementServiceImpl implements EsemenyManagementService {
         EsemenyDto dto = mapper.map(entity, EsemenyDto.class);
 
         return dto;
+    }
+
+    @Override
+    public List<EsemenyDto> findAllByNevKod(String nev) {
+        List<EsemenyEntity> szurt = new ArrayList<>();
+
+        szurt = repo.findAll()
+                .stream()
+                .filter(x -> x.getNev().contains(nev))
+                .toList();
+
+        return mapper.map(szurt, new TypeToken<List<EsemenyDto>>(){}.getType());
+    }
+
+    @Override
+    public List<EsemenyDto> findAllByNevDb(String nev) {
+        return mapper.map(repo.findAllByNevContains(nev), new TypeToken<List<EsemenyDto>>(){}.getType());
+    }
+
+    @Override
+    public List<EsemenyDto> findAllByAny(String nev, Date kezdo, Date veg, String leiras, String letrehozo) {
+        List<EsemenyEntity> szurt = new ArrayList<>();
+
+        szurt = repo.findAll()
+                .stream()
+                .filter(x -> nev == null || x.getNev().equals(nev))
+                .filter(x -> kezdo == null || x.getKezdes().after(kezdo))
+                .filter(x -> veg == null || x.getVeg().before(veg))
+                .filter(x -> leiras == null || x.getLeiras().contains(leiras))
+                .filter(x -> letrehozo == null || x.getLetrehozo().equals(letrehozo))
+                .toList();
+
+        return mapper.map(szurt, new TypeToken<List<EsemenyDto>>(){}.getType());
     }
 }

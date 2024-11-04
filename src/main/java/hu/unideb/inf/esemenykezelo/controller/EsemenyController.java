@@ -61,20 +61,13 @@ public class EsemenyController {
     //localhost:8080/api/esemeny/napfogyatkozas
     @GetMapping("/esemeny/{nev}")
     public List<EsemenyDto> findAllByNev(@PathVariable String nev){
-        List<EsemenyDto> szurt = new ArrayList<>();
-
-        szurt = repository.findAll()
-                .stream()
-                .filter(x -> x.getNev().contains(nev))
-                .toList();
-
-        return szurt;
+        return service.findAllByNevKod(nev);
     }
 
     //localhost:8080/api/esemenybynev?nev=napfogyatkozas
     @GetMapping("/esemenybynev")
     public List<EsemenyDto> findAllByNevRp(@RequestParam String nev){
-        return repository.findAllByNevContains(nev);
+        return service.findAllByNevDb(nev);
     }
 
     //localhost:8080/api/filteresemeny?kezdo=2024-10-28&letrehozo=mancs
@@ -85,19 +78,7 @@ public class EsemenyController {
                                              @RequestParam(required = false)@DateTimeFormat(pattern = "yyyy-MM-dd") Date veg,
                                              @RequestParam(required = false) String leiras,
                                              @RequestParam(required = false) String letrehozo){
-
-        List<EsemenyDto> szurt = new ArrayList<>();
-
-        szurt = repository.findAll()
-                .stream()
-                .filter(x -> nev == null || x.getNev().equals(nev))
-                .filter(x -> kezdo == null || x.getKezdes().after(kezdo))
-                .filter(x -> veg == null || x.getVeg().before(veg))
-                .filter(x -> leiras == null || x.getLeiras().contains(leiras))
-                .filter(x -> letrehozo == null || x.getLetrehozo().equals(letrehozo))
-                .toList();
-
-        return szurt;
+        return service.findAllByAny(nev,kezdo,veg,leiras,letrehozo);
     }
 
 
