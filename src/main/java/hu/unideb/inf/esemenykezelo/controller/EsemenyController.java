@@ -1,7 +1,7 @@
 package hu.unideb.inf.esemenykezelo.controller;
 
-import hu.unideb.inf.esemenykezelo.data.entity.EsemenyEntity;
-import hu.unideb.inf.esemenykezelo.data.repository.EsemenyRepository;
+import hu.unideb.inf.esemenykezelo.service.EsemenyManagementService;
+import hu.unideb.inf.esemenykezelo.service.dto.EsemenyDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -17,7 +17,7 @@ import java.util.List;
 public class EsemenyController {
 
     @Autowired
-    EsemenyRepository repository;
+    EsemenyManagementService service;
 
     @GetMapping("/hello")
     public String hello(){
@@ -32,16 +32,16 @@ public class EsemenyController {
     // localhost:8080/api/saveesemeny
     //CREATE
     @PostMapping("/saveesemeny")
-    public EsemenyEntity save(@RequestBody EsemenyEntity entity){
-        return repository.save(entity);
+    public EsemenyDto save(@RequestBody EsemenyDto dto){
+        return service.save(dto);
     }
 
     // localhost:8080/api/updateesemeny
     //UPDATE
     @PutMapping("/updateesemeny")
-    public EsemenyEntity update(@RequestBody EsemenyEntity entity){
-        if(entity.getId() > 0L){
-            return repository.save(entity);
+    public EsemenyDto update(@RequestBody EsemenyDto dto){
+        if(dto.getId() > 0L){
+            return service.save(dto);
         }
         return null;
     }
@@ -50,18 +50,18 @@ public class EsemenyController {
     //DELETE
     @DeleteMapping("/esemeny")
     public void delete(@RequestParam Long id){
-        repository.deleteById(id);
+        service.deleteById(id);
     }
 
     @GetMapping("/esemenyek")
-    public List<EsemenyEntity> findAll(){
-        return repository.findAll();
+    public List<EsemenyDto> findAll(){
+        return service.findAll();
     }
 
     //localhost:8080/api/esemeny/napfogyatkozas
     @GetMapping("/esemeny/{nev}")
-    public List<EsemenyEntity> findAllByNev(@PathVariable String nev){
-        List<EsemenyEntity> szurt = new ArrayList<>();
+    public List<EsemenyDto> findAllByNev(@PathVariable String nev){
+        List<EsemenyDto> szurt = new ArrayList<>();
 
         szurt = repository.findAll()
                 .stream()
@@ -73,20 +73,20 @@ public class EsemenyController {
 
     //localhost:8080/api/esemenybynev?nev=napfogyatkozas
     @GetMapping("/esemenybynev")
-    public List<EsemenyEntity> findAllByNevRp(@RequestParam String nev){
+    public List<EsemenyDto> findAllByNevRp(@RequestParam String nev){
         return repository.findAllByNevContains(nev);
     }
 
     //localhost:8080/api/filteresemeny?kezdo=2024-10-28&letrehozo=mancs
     //localhost:8080/api/filteresemeny?nev=csillag&veg=2024-11-02
     @GetMapping("/filteresemeny")
-    public List<EsemenyEntity> filterEsemeny(@RequestParam(required = false) String nev,
+    public List<EsemenyDto> filterEsemeny(@RequestParam(required = false) String nev,
                                              @RequestParam(required = false)@DateTimeFormat(pattern = "yyyy-MM-dd") Date kezdo,
                                              @RequestParam(required = false)@DateTimeFormat(pattern = "yyyy-MM-dd") Date veg,
                                              @RequestParam(required = false) String leiras,
                                              @RequestParam(required = false) String letrehozo){
 
-        List<EsemenyEntity> szurt = new ArrayList<>();
+        List<EsemenyDto> szurt = new ArrayList<>();
 
         szurt = repository.findAll()
                 .stream()
