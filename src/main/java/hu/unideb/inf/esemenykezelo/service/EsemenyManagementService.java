@@ -9,5 +9,5 @@ public interface EsemenyManagementService {
     EsemenyDto findById(Long id);
     List<EsemenyDto> findAll();
     void deleteById(Long id);
-    EsemenyDto save(EsemenyDto semenyDto);
+    EsemenyDto save(EsemenyDto esemenyDto);
 }
