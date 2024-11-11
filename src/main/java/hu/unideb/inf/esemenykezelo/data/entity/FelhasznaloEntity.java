@@ -94,6 +94,14 @@ public class FelhasznaloEntity implements UserDetails {
         this.esemenyek = esemenyek;
     }
 
+    public JogosultsagEntity getJogosultsag() {
+        return jogosultsag;
+    }
+
+    public void setJogosultsag(JogosultsagEntity jogosultsag) {
+        this.jogosultsag = jogosultsag;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
