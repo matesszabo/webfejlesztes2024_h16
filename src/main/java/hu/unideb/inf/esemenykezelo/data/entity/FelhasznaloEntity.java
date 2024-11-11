@@ -29,6 +29,9 @@ public class FelhasznaloEntity {
     )
     private List<EsemenyEntity> esemenyek;
 
+    @ManyToOne
+    private JogosultsagEntity jogosultsag;
+
     public FelhasznaloEntity() {
     }
 
