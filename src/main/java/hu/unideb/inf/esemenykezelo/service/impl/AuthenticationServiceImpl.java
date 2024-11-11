@@ -9,6 +9,8 @@ import hu.unideb.inf.esemenykezelo.service.dto.BejelentkezesDto;
 import hu.unideb.inf.esemenykezelo.service.dto.RegisztracioDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Autowired
     JogosultsagRepository jogRepo;
+
+    @Autowired
+    AuthenticationManager manager;
 
     @Override
     public void regisztracio(RegisztracioDto dto) {
@@ -45,6 +50,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public void bejelentkezes(BejelentkezesDto dto) {
+        manager.authenticate(
+                new UsernamePasswordAuthenticationToken(dto.getEmail(),dto.getJelszo())
+        );
 
     }
 }
