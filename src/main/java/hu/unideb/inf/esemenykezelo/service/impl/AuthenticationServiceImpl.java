@@ -5,6 +5,7 @@ import hu.unideb.inf.esemenykezelo.data.entity.JogosultsagEntity;
 import hu.unideb.inf.esemenykezelo.data.repository.FelhasznaloRepository;
 import hu.unideb.inf.esemenykezelo.data.repository.JogosultsagRepository;
 import hu.unideb.inf.esemenykezelo.service.AuthenticationService;
+import hu.unideb.inf.esemenykezelo.service.JwtService;
 import hu.unideb.inf.esemenykezelo.service.dto.BejelentkezesDto;
 import hu.unideb.inf.esemenykezelo.service.dto.RegisztracioDto;
 import org.modelmapper.ModelMapper;
@@ -25,12 +26,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     PasswordEncoder passwordEncoder;
     @Autowired
     FelhasznaloRepository felhasznaloRepository;
-
     @Autowired
     JogosultsagRepository jogRepo;
-
     @Autowired
     AuthenticationManager manager;
+    @Autowired
+    JwtService jwtService;
 
     @Override
     public void regisztracio(RegisztracioDto dto) {
@@ -52,13 +53,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public void bejelentkezes(BejelentkezesDto dto) {
-        SecurityContext context = SecurityContextHolder.createEmptyContext();
+    public String bejelentkezes(BejelentkezesDto dto) {
         Authentication auth = manager.authenticate(
                 new UsernamePasswordAuthenticationToken(dto.getEmail(),dto.getJelszo())
         );
-        context.setAuthentication(auth);
-        SecurityContextHolder.setContext(context);
-
+        //felhasznalo entity, ami egy UserDetails is
+        var user = felhasznaloRepository.findByEmail(dto.getEmail());
+        return jwtService.generateToken(user);
     }
 }

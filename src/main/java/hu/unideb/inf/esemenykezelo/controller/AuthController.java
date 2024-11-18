@@ -22,8 +22,8 @@ public class AuthController {
     }
 
     @PostMapping("/bejelentkezes")
-    public void bejelentkezes(@RequestBody BejelentkezesDto dto){
-        service.bejelentkezes(dto);
+    public String bejelentkezes(@RequestBody BejelentkezesDto dto){
+        return service.bejelentkezes(dto);
     }
 
 }
